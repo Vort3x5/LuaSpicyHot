@@ -66,7 +66,9 @@ local function Shell()
 		local choice = tonumber(io.read())
 
 		if choice == 1 then
-			io.write("Pass Resistor parameters: ")
+			print("Pass Resistor parameters.")
+			print("units: OM, S, A, V")
+			print("scales: m, 1, k")
 			input = io.read()
 			ParseParams(input)
 		elseif choice == 3 then
