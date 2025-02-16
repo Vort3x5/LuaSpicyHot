@@ -1,3 +1,5 @@
+local imgui = require("imgui")
+
 -- Resistor
 local resistors = {}
 
@@ -36,45 +38,34 @@ local conduction_scale_units = {
 	kS = 1000,
 }
 
-local function ParseParams(input)
-	local value, unit = input:match("^(%d+%.?%d*)([a-zA-Z]+)$")
-	print(value)
-	if value then
-		value = tonumber(value)
+local showTestWindow = false
+local showAnotherWindow = false
+local floatValue = 0;
+local sliderFloat = { 0.1, 0.5 }
+local clearColor = { 0.2, 0.2, 0.2 }
+local comboSelection = 1
+local textValue = "text"
 
-		if voltage_scale_units[unit] then
-			return value*voltage_scale_units[unit], "voltage"
-		elseif current_scale_units[unit] then
-			return value*current_scale_units[unit], "current"
-		elseif resistance_scale_units[unit] then
-			return value*resistance_scale_units[unit], "resistance"
-		elseif conduction_scale_units[unit] then
-			return value*conduction_scale_units[unit], "conduction"
-		else
-			error("Unknown unit: " .. unit)
-		end
-	else
-		error("Invalid parameter format" .. input)
-	end
+function love.load(arg)
+	imgui.SetReturnValueLast(false)
 end
 
-local function Shell()
-	while true do
-		print("1. Add resistor")
-		print("2. List resistors")
-		print("3. Exit")
-		local choice = tonumber(io.read())
-
-		if choice == 1 then
-			print("Pass Resistor parameters.")
-			print("units: OM, S, A, V")
-			print("scales: m, 1, k")
-			input = io.read()
-			ParseParams(input)
-		elseif choice == 3 then
-			break
-		end
-	end
+function love.update(dt)
+	imgui.NewFrame()
 end
 
-Shell()
+function love.draw()
+	local status
+
+	if imgui.BeginMainMenuBar() then
+		if imgui.BeginMenu("File") then
+			imgui.MenuItem("Test")
+			imgui.EndMenu()
+		end
+		imgui.EndMainMenuBar()
+	end
+	imgui.Text("Hello, world!")
+    status, clearColor[1], clearColor[2], clearColor[3] = imgui.ColorEdit3("Clear color", clearColor[1], clearColor[2], clearColor[3])
+
+	imgui.Render()
+end
