@@ -1,4 +1,6 @@
-local imgui = require("imgui")
+#!/usr/bin/evn lua
+
+local fltk = require("fltk4lua")
 
 -- Resistor
 local resistors = {}
@@ -38,34 +40,12 @@ local conduction_scale_units = {
 	kS = 1000,
 }
 
-local showTestWindow = false
-local showAnotherWindow = false
-local floatValue = 0;
-local sliderFloat = { 0.1, 0.5 }
-local clearColor = { 0.2, 0.2, 0.2 }
-local comboSelection = 1
-local textValue = "text"
+local window = fltk.Window(400, 300, arg[0])
 
-function love.load(arg)
-	imgui.SetReturnValueLast(false)
-end
+local b = fltk.Box(10, 10, 300, 300, [[
+MINIMUM UPDATE TEST]])
+b.box = "FL_ENGRAVED_FRAME"
+window.resizable = b
 
-function love.update(dt)
-	imgui.NewFrame()
-end
-
-function love.draw()
-	local status
-
-	if imgui.BeginMainMenuBar() then
-		if imgui.BeginMenu("File") then
-			imgui.MenuItem("Test")
-			imgui.EndMenu()
-		end
-		imgui.EndMainMenuBar()
-	end
-	imgui.Text("Hello, world!")
-    status, clearColor[1], clearColor[2], clearColor[3] = imgui.ColorEdit3("Clear color", clearColor[1], clearColor[2], clearColor[3])
-
-	imgui.Render()
-end
+window:show(arg)
+fltk.run()
