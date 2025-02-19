@@ -1,6 +1,4 @@
-#!/usr/bin/evn lua
-
-local fltk = require("fltk4lua")
+ local love = require("love")
 
 local resistors = {}
 
@@ -22,12 +20,35 @@ local scale_units = {
 	M = 1000000,
 }
 
-local window = fltk.Window(400, 300, arg[0])
+WINDOW_WIDTH = 1280
+WINDOW_HEIGHT = 720
 
-local b = fltk.Box(10, 10, 300, 300, [[
-MINIMUM UPDATE TEST]])
-b.box = "FL_ENGRAVED_FRAME"
-window.resizable = b
+function love.load()
+	love.window.setTitle("LuaSpicyHot")
+	love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { fullscreen = false })
 
-window:show(arg)
-fltk.run()
+	-- background color: gray
+    love.graphics.setBackgroundColor(0.2, 0.2, 0.2)
+end
+
+function love.update(dt)
+end
+
+function love.draw()
+	DrawGrid()
+end
+
+function DrawGrid()
+    -- Set the grid color to black
+    love.graphics.setColor(0, 0, 0)
+	love.graphics.setLineWidth(2)
+
+	grid_size = 10
+    for x = 0, WINDOW_WIDTH, grid_size do
+        love.graphics.line(x, 0, x, WINDOW_HEIGHT)
+    end 
+
+    for y = 0, WINDOW_HEIGHT, grid_size do
+        love.graphics.line(0, y, WINDOW_WIDTH, y)
+    end
+end
