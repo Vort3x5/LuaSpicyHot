@@ -21,25 +21,48 @@ local scale_units = {
 
 WINDOW_WIDTH = 1280
 WINDOW_HEIGHT = 720
+BACKGROUND_COLOR = { 0.2, 0.2, 0.2 } -- gray
 GRID_SIZE = 10
+
+LEFT_KEYS  = {"left", "a", "h", "m"}
+DOWN_KEYS  = {"down", "s", "j", "n"}
+UP_KEYS    = {"up", "w", "k", "e"}
+RIGHT_KEYS = {"right", "d", "l", "i"}
+
+sprites = {}
 
 function love.load()
 	love.window.setTitle("LuaSpicyHot")
 	love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { fullscreen = false })
+    love.graphics.setBackgroundColor(BACKGROUND_COLOR)
 
-	-- background color: gray
-    love.graphics.setBackgroundColor(0.2, 0.2, 0.2)
+	cursor = { x = WINDOW_WIDTH / 2, y = WINDOW_HEIGHT / 2 }
+	table.insert(sprites, cursor)
 end
 
 function love.update(dt)
 end
 
+function love.keypressed(key)
+	if key == "escape" or key == 'q' then
+		love.event.quit()
+	end
+end
+
 function love.draw()
 	DrawElement(640, 360, Cursor)
+	love.graphics.clear(BACKGROUND_COLOR)
 end
 
 function DrawElement(x, y, Element)
 	love.graphics.setColor(0, 0, 0)
+	love.graphics.setLineWidth(3)
+
+	Element(x, y)
+end
+
+function UndrawElement(x, y ,Element)
+	love.graphics.setColor(BACKGROUND_COLOR)
 	love.graphics.setLineWidth(3)
 
 	Element(x, y)
