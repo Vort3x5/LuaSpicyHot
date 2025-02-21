@@ -45,7 +45,7 @@ function DrawElement(x, y, Element)
 	Element(x, y)
 end
 
-function DrawCursor(x, y)
+function Cursor(x, y)
 	love.graphics.setColor(0, 0, 1)
 	love.graphics.setLineWidth(2)
 	love.graphics.line(x, y, x + GRID_SIZE, y)
