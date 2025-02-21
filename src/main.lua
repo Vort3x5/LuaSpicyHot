@@ -1,8 +1,8 @@
-local love = require("love")
-local logic = require("logic")
+local love     = require("love")
+local logic    = require("logic")
 local settings = require("settings")
-local utils = require("utils")
-local draw = require("draw")
+local utils    = require("utils")
+local draw     = require("draw")
 
 function love.load()
 	love.window.setTitle("LuaSpicyHot")
