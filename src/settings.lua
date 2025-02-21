@@ -1,7 +1,7 @@
-WINDOW_WIDTH = 1280
-WINDOW_HEIGHT = 720
+WINDOW_WIDTH     = 1280
+WINDOW_HEIGHT    = 720
 BACKGROUND_COLOR = { 0.2, 0.2, 0.2 } -- gray
-GRID_SIZE = 10
+GRID_SIZE        = 10
 
 LEFT_KEYS  = {"left", "a", "h", "m"}
 DOWN_KEYS  = {"down", "s", "j", "n"}
