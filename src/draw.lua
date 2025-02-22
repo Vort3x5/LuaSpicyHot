@@ -1,8 +1,10 @@
 function DrawElement(x, y, Element)
+	love.graphics.push()
 	love.graphics.setColor(0, 0, 0)
 	love.graphics.setLineWidth(3)
 
 	Element(x, y)
+	love.graphics.pop()
 end
 
 function Cursor(x, y)

@@ -1,2 +1,2 @@
 run:
-	love src
+	prime-run love src
