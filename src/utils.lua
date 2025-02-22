@@ -6,3 +6,7 @@ function InTable(arr, v)
 	end
 	return false
 end
+
+function AddSprite(pos_x, pos_y, draw_func)
+	table.insert(sprites, { x = pos_x, y = pos_y, draw = draw_func })
+end

@@ -9,11 +9,20 @@ function love.load()
 	love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { fullscreen = false })
     love.graphics.setBackgroundColor(BACKGROUND_COLOR)
 
-	local cursor = { x = WINDOW_WIDTH / 2, y = WINDOW_HEIGHT / 2, draw = Cursor }
-	table.insert(sprites, cursor)
+	AddSprite(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2, Cursor)
 end
 
 function love.update(dt)
+	local cursor = sprites[1]
+	if love.keyboard.isDown(LEFT_KEYS) then
+		cursor.x = cursor.x - 2
+	elseif love.keyboard.isDown(DOWN_KEYS) then
+		cursor.y = cursor.y + 2
+	elseif love.keyboard.isDown(UP_KEYS) then
+		cursor.y = cursor.y - 2
+	elseif love.keyboard.isDown(RIGHT_KEYS) then
+		cursor.x = cursor.x + 2
+	end
 end
 
 function love.keypressed(key)
@@ -22,20 +31,13 @@ function love.keypressed(key)
 	end
 
 	local cursor = sprites[1]
-	if InTable(LEFT_KEYS, key) then
-		cursor.x = cursor.x - GRID_SIZE
-	elseif InTable(DOWN_KEYS, key) then
-		cursor.y = cursor.y + GRID_SIZE
-	elseif InTable(UP_KEYS, key) then
-		cursor.y = cursor.y - GRID_SIZE
-	elseif InTable(RIGHT_KEYS, key) then
-		cursor.x = cursor.x + GRID_SIZE
+	if key == "space" then
+		AddSprite(cursor.x, cursor.y, Resistor)
 	end
 end
 
 function love.draw()
 	love.graphics.clear(BACKGROUND_COLOR)
-	DrawElement(0, 0, Cursor)
 	for i, sprite in ipairs(sprites) do
 		DrawElement(sprite.x, sprite.y, sprite.draw)
 	end
