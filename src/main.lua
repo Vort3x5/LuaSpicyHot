@@ -43,6 +43,11 @@ function love.keypressed(key)
 	if modifying then
 		if key == 'r' then
 			element.angle = (element.angle + 90) % 360
+		elseif (InTable(FLAT_DEGREES, element.angle) and 
+			(InTable(LEFT_KEYS, key) or InTable(RIGHT_KEYS, key)))
+			or (InTable(UP_KEYS, key) or InTable(DOWN_KEYS, key))
+			then
+			-- TODO: AddWire
 		end
 	end
 
