@@ -3,7 +3,7 @@ function DrawElement(x, y, Element, angle)
 	love.graphics.setColor(0, 0, 0)
 	love.graphics.setLineWidth(3)
 	love.graphics.translate(x, y)
-	love.graphics.rotate(math.rad(angle) or 0)
+	love.graphics.rotate(math.rad(angle))
 
 	Element(x, y)
 	love.graphics.pop()
@@ -24,11 +24,11 @@ function Plug(x, y)
 end
 
 function Resistor(x, y)
-	love.graphics.line(-GRID_SIZE, 0, GRID_SIZE, 0)
-	love.graphics.line(-GRID_SIZE, 0, -GRID_SIZE, -3*GRID_SIZE)
-	love.graphics.line(GRID_SIZE, 0, GRID_SIZE, -3*GRID_SIZE)
-	love.graphics.line(-GRID_SIZE, -3*GRID_SIZE, GRID_SIZE, -3*GRID_SIZE)
+	love.graphics.line(-GRID_SIZE, 1.5*GRID_SIZE, GRID_SIZE, 1.5*GRID_SIZE)
+	love.graphics.line(-GRID_SIZE, -1.5*GRID_SIZE, GRID_SIZE, -1.5*GRID_SIZE)
+	love.graphics.line(-GRID_SIZE, 1.5*GRID_SIZE, -GRID_SIZE, -1.5*GRID_SIZE)
+	love.graphics.line(GRID_SIZE, 1.5*GRID_SIZE, GRID_SIZE, -1.5*GRID_SIZE)
 
-	Plug(0, 0)
-	Plug(0, -3*GRID_SIZE)
+	Plug(0, 1.5*GRID_SIZE)
+	Plug(0, -1.5*GRID_SIZE)
 end
