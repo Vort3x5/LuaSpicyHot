@@ -9,8 +9,8 @@ function InTable(arr, v)
 	return false
 end
 
-function AddSprite(pos_x, pos_y, draw_func)
-	table.insert(sprites, { x = pos_x, y = pos_y, draw = draw_func })
+function AddSprite(pos_x, pos_y, draw_func, angle)
+	table.insert(sprites, { x = pos_x, y = pos_y, draw = draw_func, angle = angle or 0 })
 end
 
 function FillSpriteID(x, y, id)

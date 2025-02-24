@@ -4,6 +4,9 @@ local settings = require("settings")
 local utils    = require("utils")
 local draw     = require("draw")
 
+modifying = false
+element = 0
+
 function love.load()
 	love.window.setTitle("LuaSpicyHot")
 	love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { fullscreen = false })
@@ -25,14 +28,29 @@ function love.update(dt)
 end
 
 function love.keypressed(key)
-	if key == "escape" or key == 'q' then
+	if key == 'q' then
 		love.event.quit()
+	end
+
+	if key == "escape" then 
+		element = 0
+		modifying = false
+	end
+	if modifying then
+		if key == 'r' then
+			element.angle = (element.angle + 45) % 360
+		end
 	end
 
 	local cursor = sprites[1]
 	if love.keyboard.isDown("lshift") and key == "r" then
 		AddSprite(cursor.x, cursor.y, Resistor)
-	elseif key == "space" and InSprite(cursor.x, cursor.y) > 0 then
+	elseif key == "space" then
+		id = InSprite(cursor.x, cursor.y)
+		if id then
+			element = sprites[id]
+			modifying = true
+		end
 	end
 end
 

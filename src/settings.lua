@@ -8,4 +8,6 @@ DOWN_KEYS  = {"down", "s", "j", "n"}
 UP_KEYS    = {"up", "w", "k", "e"}
 RIGHT_KEYS = {"right", "d", "l", "i"}
 
+ELEMENT_KEYS = {"escape", "r"}
+
 sprites = {}
