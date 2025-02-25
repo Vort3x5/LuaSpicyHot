@@ -11,7 +11,7 @@ function love.load()
 	love.window.setTitle("LuaSpicyHot")
 	love.window.setMode(WINDOW_WIDTH, WINDOW_HEIGHT, { fullscreen = false })
     love.graphics.setBackgroundColor(BACKGROUND_COLOR)
-	AddSprite(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2, Cursor, 0)
+	AddNode(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2, Cursor, 0)
 	modifying = false
 end
 
@@ -36,6 +36,7 @@ function love.keypressed(key)
 		love.event.quit()
 	end
 
+	local cursor = sprites[1]
 	if key == "escape" then 
 		element = 0
 		modifying = false
@@ -43,17 +44,29 @@ function love.keypressed(key)
 	if modifying then
 		if key == 'r' then
 			element.angle = (element.angle + 90) % 360
-		elseif (InTable(FLAT_DEGREES, element.angle) and 
-			(InTable(LEFT_KEYS, key) or InTable(RIGHT_KEYS, key)))
-			or (InTable(UP_KEYS, key) or InTable(DOWN_KEYS, key))
-			then
-			-- TODO: AddWire
+		end
+		local start_x, start_y = cursor.x, cursor.y
+		if InTable(FLAT_DEGREES, element.angle) then
+			if InTable(LEFT_KEYS, key) then
+				cursor.x, cursor.y = element.x - 1.5*GRID_SIZE, element.y
+			elseif InTable(RIGHT_KEYS, key) then
+				cursor.x, cursor.y = element.x + 1.5*GRID_SIZE, element.y
+			end
+		else
+			if InTable(DOWN_KEYS, key) then
+				cursor.x, cursor.y = element.x, element.y + 1.5*GRID_SIZE
+			elseif InTable(UP_KEYS, key) then
+				cursor.x, cursor.y = element.x, element.y - 1.5*GRID_SIZE
+			end
+		end
+		if start_x ~= cursor.x or start_y ~= cursor.y then
+			start_x, start_y = cursor.x, cursor.y
+			-- AddEdge(start_x, start_y, Wire)
 		end
 	end
 
-	local cursor = sprites[1]
 	if love.keyboard.isDown("lshift") and key == "r" then
-		AddSprite(cursor.x, cursor.y, Resistor, 0)
+		AddNode(cursor.x, cursor.y, Resistor, 0)
 	elseif key == "space" then
 		id = InSprite(cursor.x, cursor.y)
 		print(id)
@@ -76,7 +89,7 @@ function love.draw()
 	for i, sprite in ipairs(sprites) do
 		DrawElement(sprite.x, sprite.y, sprite.draw, sprite.angle)
 		if i > 1 then
-			FillSpriteID(sprite.x, sprite.y, i) -- don't fill for cursor
+			FillNodeID(sprite.x, sprite.y, i) -- don't fill for cursor
 		end
 	end
 end

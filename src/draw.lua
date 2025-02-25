@@ -5,7 +5,7 @@ function DrawElement(x, y, Element, angle)
 	love.graphics.translate(x, y)
 	love.graphics.rotate(math.rad(angle))
 
-	Element(x, y)
+	Element()
 	love.graphics.pop()
 end
 
@@ -23,7 +23,7 @@ function Plug(x, y)
 	love.graphics.circle("fill", x, y, GRID_SIZE / 5)
 end
 
-function Resistor(x, y)
+function Resistor()
 	love.graphics.line(-GRID_SIZE, 1.5*GRID_SIZE, GRID_SIZE, 1.5*GRID_SIZE)
 	love.graphics.line(-GRID_SIZE, -1.5*GRID_SIZE, GRID_SIZE, -1.5*GRID_SIZE)
 	love.graphics.line(-GRID_SIZE, 1.5*GRID_SIZE, -GRID_SIZE, -1.5*GRID_SIZE)
@@ -31,4 +31,8 @@ function Resistor(x, y)
 
 	Plug(0, 1.5*GRID_SIZE)
 	Plug(0, -1.5*GRID_SIZE)
+end
+
+function Wire(start_x, start_y, curr_x, curr_y)
+	love.graphics.line(start_x, start_y, curr_x, curr_y)
 end

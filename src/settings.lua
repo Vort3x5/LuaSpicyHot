@@ -13,3 +13,4 @@ ELEMENT_KEYS = {"escape", "r"}
 FLAT_DEGREES = {90, 270}
 
 sprites = {}
+wires   = {}
