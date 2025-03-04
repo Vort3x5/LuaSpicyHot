@@ -1,5 +1,3 @@
-elements_on_screen = {}
-
 function InTable(arr, v)
 	for _, i in ipairs(arr) do
 		if i == v then
@@ -18,12 +16,12 @@ function AddNode(pos_x, pos_y, draw_func, angle)
 	})
 end
 
-function AddEdge(start_x, start_y, curr_x, curr_y, direction, id)
+function AddEdge(start_x, start_y, end_x, end_y, direction, id)
 	table.insert(wires, {
 		start_x = start_x, 
 		start_y = start_y, 
-		end_x = curr_x,
-		end_y = curr_y,
+		end_x = end_x,
+		end_y = end_y,
 		direction = direction,
 		id = id
 	})
@@ -39,10 +37,23 @@ function FillNodeID(x, y, id)
 	end
 end
 
-function FillEdgeID(start_x, start_y, curr_x, curr_y, direction)
+function FillEdgeID(start_x, start_y, end_x, end_y, direction)
 	local L, D, U, R = 1, 2, 3, 4
 	if direction == L or direction == R then
+		i_start = start_y - GRID_SIZE 
+		i_end = end_y + GRID_SIZE
+		j_start = start_x
+		j_end = end_x
 	else
+		i_start = start_y
+		i_end = end_y
+		j_start = start_x - GRID_SIZE
+		j_end = end_x + GRID_SIZE
+	end
+	for i=i_start, i_end do
+		for j=j_start, j_end do
+			elements_on_screen[(i - 1)*WINDOW_WIDTH + j] = id
+		end
 	end
 end
 

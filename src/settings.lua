@@ -11,6 +11,3 @@ RIGHT_KEYS = {"right", "d", "l", "i"}
 ELEMENT_KEYS = {"escape", "r"}
 
 FLAT_DEGREES = {90, 270}
-
-sprites = {}
-wires   = {}

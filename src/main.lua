@@ -4,7 +4,18 @@ local settings = require("settings")
 local utils    = require("utils")
 local draw     = require("draw")
 
+sprites = {}
+wires = {}
+elements_on_screen = {}
+
 modifying = false
+drawing_wire = {
+	state = false,
+	start_x = 0,
+	start_y = 0,
+	dir = 0
+}
+
 element = 0
 
 function love.load()
@@ -19,7 +30,7 @@ function love.update(dt)
 	local cursor = sprites[1]
 
 	-- hung cursor if currently modifying
-	if modifying then
+	if modifying and drawing_wire then
 	elseif love.keyboard.isDown(LEFT_KEYS) then
 		cursor.x = cursor.x - 2
 	elseif love.keyboard.isDown(DOWN_KEYS) then
@@ -60,8 +71,11 @@ function love.keypressed(key)
 			end
 		end
 		if start_x ~= cursor.x or start_y ~= cursor.y then
-			start_x, start_y = cursor.x, cursor.y
-			-- AddEdge(start_x, start_y, Wire)
+			drawing_wire = {
+				state = true,
+				start_x = cursor.x,
+				start_y = cursor.y
+			}
 		end
 	end
 
@@ -73,8 +87,14 @@ function love.keypressed(key)
 		if id ~= 0 then
 			element = sprites[id]
 			modifying = true
-			print(modifying)
 		end
+	elseif key == 'return' and drawing_wire then
+		AddEdge(
+		   drawing_wire.start_x, 
+		   drawing_wire.start_y, 
+		   cursor.x,
+		   cursor.y,
+		)
 	end
 end
 
@@ -91,5 +111,11 @@ function love.draw()
 		if i > 1 then
 			FillNodeID(sprite.x, sprite.y, i) -- don't fill for cursor
 		end
+	end
+	if modifying and drawing_wire.state then
+		DrawWire(
+			drawing_wire.start_x, drawing_wire.start_y,
+			cursor.x, cursor.y,
+		)
 	end
 end
