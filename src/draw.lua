@@ -33,7 +33,8 @@ function Resistor()
 	Plug(0, -1.5*GRID_SIZE)
 end
 
-function DrawWire(start_x, start_y, curr_x, curr_y)
+function DrawWire(start_x, start_y, end_x, end_y)
+	love.graphics.setColor(0, 0, 0)
 	love.graphics.setLineWidth(2)
-	love.graphics.line(start_x, start_y, curr_x, curr_y)
+	love.graphics.line(start_x, start_y, end_x, end_y)
 end
