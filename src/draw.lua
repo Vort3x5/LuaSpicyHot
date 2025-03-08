@@ -1,3 +1,17 @@
+function DebugIDs()
+	for y=1, WINDOW_HEIGHT do
+		for x=1, WINDOW_HEIGHT do
+			if elements_on_screen[(y - 1)*WINDOW_WIDTH + x] > 0 then
+				love.graphics.setColor(0, 1, 0)
+				love.graphics.points(x, y)
+			elseif elements_on_screen[(y - 1)*WINDOW_WIDTH + x] < 0 then
+				love.graphics.setColor(1, 0, 0)
+				love.graphics.points(x, y)
+			end
+		end
+	end
+end
+
 function DrawElement(x, y, Element, angle)
 	love.graphics.push()
 	love.graphics.setColor(0, 0, 0)
@@ -35,6 +49,6 @@ end
 
 function DrawWire(start_x, start_y, end_x, end_y)
 	love.graphics.setColor(0, 0, 0)
-	love.graphics.setLineWidth(2)
+	love.graphics.setLineWidth(1)
 	love.graphics.line(start_x, start_y, end_x, end_y)
 end

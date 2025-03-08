@@ -1,3 +1,11 @@
+function ClearIDs()
+	for y=1, WINDOW_HEIGHT do
+		for x=1, WINDOW_HEIGHT do
+			elements_on_screen[(y - 1)*WINDOW_WIDTH + x] = 0
+		end
+	end
+end
+
 function Abort(err)
 	local red = "\27[31m"
 	local reset = "\27[0m"
@@ -10,7 +18,13 @@ function ResetWiring()
 		state = false,
 		start_x = 0,
 		start_y = 0,
-		dir = 0
+		dir = 0,
+		id = 0
+	}
+	from_wire = {
+		state = false,
+		x = 0,
+		y = 0,
 	}
 end
 
@@ -32,13 +46,14 @@ function AddNode(pos_x, pos_y, draw_func, angle)
 	})
 end
 
-function AddEdge(start_x, start_y, end_x, end_y, direction)
+function AddEdge(start_x, start_y, end_x, end_y, direction, id)
 	table.insert(wires, {
 		start_x = start_x, 
 		start_y = start_y, 
 		end_x = end_x,
 		end_y = end_y,
 		direction = direction,
+		id = id
 	})
 end
 
@@ -53,7 +68,6 @@ function FillNodeID(x, y, id)
 end
 
 function FillEdgeID(start_x, start_y, end_x, end_y, direction, id)
-	local L, D, U, R = 1, 2, 3, 4
 	if direction == L or direction == R then
 		i_start = start_y - GRID_SIZE 
 		i_end = end_y + GRID_SIZE
@@ -66,6 +80,12 @@ function FillEdgeID(start_x, start_y, end_x, end_y, direction, id)
 		j_end = end_x + GRID_SIZE
 	else
 		Abort("ERROR: No direction given")
+	end
+	if i_start > i_end then
+		i_start, i_end = i_end, i_start
+	end
+	if j_start > j_end then
+		j_start, j_end = j_end, j_start
 	end
 	for i=i_start, i_end do
 		for j=j_start, j_end do
