@@ -32,6 +32,7 @@ from_wire = {
 	state = false,
 	x = 0,
 	y = 0,
+	src = 0,
 }
 drawing_wire = {
 	state = false,
@@ -90,19 +91,21 @@ function love.keypressed(key)
 		local id = InSprite(cursor.x, cursor.y)
 		print(id)
 		if id > 0 then
-			SetModElement()
+			SetModElement(id)
 		elseif id < 0 then
-			SetModWire()
+			SetModWire(id)
 		end
 	elseif key == 'return' and drawing_wire.state then
 		AddEdge(
 		   drawing_wire.start_x, drawing_wire.start_y,
-           cursor.x, cursor.y,
+		   cursor.x, cursor.y,
 		   drawing_wire.dir, drawing_wire.id or 0
 		)
 		local id = InSprite(cursor.x, cursor.y)
+		print(elements_on_screen[(cursor.y - 1)*WINDOW_WIDTH + cursor.x])
+		print(id)
 		if id > 0 then
-			-- AddV(curr_circuit, src?, id)
+			AddV(curr_circuit, from_wire.src, id)
 		end
 		ExitMod()
 	end
@@ -117,12 +120,12 @@ function love.keypressed(key)
 	end
 
 	if key == "y" then
-		dbg = not dbg
+		print(elements_on_screen[(cursor.y - 1)*WINDOW_WIDTH + cursor.x])
 	end
 end
 
 function love.draw()
-	-- ClearIDs()
+	ClearIDs()
 	love.graphics.clear(BACKGROUND_COLOR)
 
 	-- Move Filling IDs to keypress function, and use batching for sprites

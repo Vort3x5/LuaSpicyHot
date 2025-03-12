@@ -13,21 +13,6 @@ function Abort(err)
 	love.event.quit()
 end
 
-function ResetWiring()
-	drawing_wire = {
-		state = false,
-		start_x = 0,
-		start_y = 0,
-		dir = 0,
-		id = 0
-	}
-	from_wire = {
-		state = false,
-		x = 0,
-		y = 0,
-	}
-end
-
 function InTable(arr, v)
 	for _, i in ipairs(arr) do
 		if i == v then

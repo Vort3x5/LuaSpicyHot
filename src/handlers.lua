@@ -1,3 +1,18 @@
+function ResetWiring()
+	drawing_wire = {
+		state = false,
+		start_x = 0,
+		start_y = 0,
+		dir = 0,
+		id = 0
+	}
+	from_wire = {
+		state = false,
+		x = 0,
+		y = 0,
+	}
+end
+
 function ExitMod()
 	element = 0
 	modifying = false
@@ -8,18 +23,17 @@ function Rotate()
 	element.angle = (element.angle + 90) % 360
 end
 
-function SetModElement()
+function SetModElement(id)
 	element = sprites[id]
 	from_wire.state = false
+	from_wire.src = id
 end
 
-function SetModWire()
+function SetModWire(id)
 	element = wires[-id]
-	from_wire = {
-		state = true,
-		x = cursor.x,
-		y = cursor.y,
-	}
+	from_wire.state = true
+	from_wire.x = cursor.x
+	from_wire.y = cursor.y
 end
 
 function WireFromElement(key)
@@ -72,4 +86,7 @@ function WireFromWire(key)
 		dir = dir,
 		id = element.id
 	}
+end
+
+function PlaceWire()
 end
