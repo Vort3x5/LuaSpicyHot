@@ -3,6 +3,7 @@ local logic    = require("logic")
 local utils    = require("utils")
 local draw     = require("draw")
 local handlers = require("handlers")
+local graphs   = require("graphs")
 
 WINDOW_WIDTH  = 1280
 WINDOW_HEIGHT = 720
@@ -24,6 +25,7 @@ L, D, U, R = 1, 2, 3, 4
 sprites = {}
 wires = {}
 elements_on_screen = {}
+circuits = {}
 
 modifying = false
 from_wire = {
@@ -39,6 +41,7 @@ drawing_wire = {
 	id = 0,
 }
 
+curr_circuit = 1
 element = 0
 cursor = {}
 
@@ -84,7 +87,7 @@ function love.keypressed(key)
 		AddNode(cursor.x, cursor.y, Resistor, 0)
 	elseif key == "space" and not modifying then
 		modifying = true
-		id = InSprite(cursor.x, cursor.y)
+		local id = InSprite(cursor.x, cursor.y)
 		print(id)
 		if id > 0 then
 			SetModElement()
@@ -97,6 +100,10 @@ function love.keypressed(key)
            cursor.x, cursor.y,
 		   drawing_wire.dir, drawing_wire.id or 0
 		)
+		local id = InSprite(cursor.x, cursor.y)
+		if id > 0 then
+			-- AddV(curr_circuit, src?, id)
+		end
 		ExitMod()
 	end
 
