@@ -57,22 +57,11 @@ function love.load()
 	modifying = false
 	ResetWiring()
 	cursor = sprites[1]
+	InitGraph()
 end
 
 function love.update(dt)
-	if love.keyboard.isDown(LEFT_KEYS) 
-	and (not drawing_wire.state or drawing_wire.dir == L) then
-		cursor.x = cursor.x - 2
-	elseif love.keyboard.isDown(DOWN_KEYS) 
-	and (not drawing_wire.state or drawing_wire.dir == D) then
-		cursor.y = cursor.y + 2
-	elseif love.keyboard.isDown(UP_KEYS) 
-	and (not drawing_wire.state or drawing_wire.dir == U) then
-		cursor.y = cursor.y - 2
-	elseif love.keyboard.isDown(RIGHT_KEYS) 
-	and (not drawing_wire.state or drawing_wire.dir == R) then
-		cursor.x = cursor.x + 2
-	end
+	CursorMovement()
 end
 
 function love.keypressed(key)
@@ -105,7 +94,7 @@ function love.keypressed(key)
 		print(elements_on_screen[(cursor.y - 1)*WINDOW_WIDTH + cursor.x])
 		print(id)
 		if id > 0 then
-			AddV(curr_circuit, from_wire.src, id)
+			AddV(from_wire.src, id)
 		end
 		ExitMod()
 	end

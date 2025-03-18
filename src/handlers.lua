@@ -23,6 +23,22 @@ function Rotate()
 	element.angle = (element.angle + 90) % 360
 end
 
+function CursorMovement()
+	if love.keyboard.isDown(LEFT_KEYS) 
+	and (not drawing_wire.state or drawing_wire.dir == L) then
+		cursor.x = cursor.x - GRID_SIZE / 2
+	elseif love.keyboard.isDown(DOWN_KEYS) 
+	and (not drawing_wire.state or drawing_wire.dir == D) then
+		cursor.y = cursor.y + GRID_SIZE / 2
+	elseif love.keyboard.isDown(UP_KEYS) 
+	and (not drawing_wire.state or drawing_wire.dir == U) then
+		cursor.y = cursor.y - GRID_SIZE / 2
+	elseif love.keyboard.isDown(RIGHT_KEYS) 
+	and (not drawing_wire.state or drawing_wire.dir == R) then
+		cursor.x = cursor.x + GRID_SIZE / 2
+	end
+end
+
 function SetModElement(id)
 	element = sprites[id]
 	from_wire.state = false
