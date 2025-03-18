@@ -23,6 +23,7 @@ function InTable(arr, v)
 end
 
 function AddNode(pos_x, pos_y, draw_func, angle)
+	node_count = node_count + 1
 	table.insert(sprites, { 
 		x = pos_x, 
 		y = pos_y, 
@@ -81,4 +82,34 @@ end
 
 function InSprite(x, y)
 	return elements_on_screen[(y - 1)*WINDOW_WIDTH + x]
+end
+
+function Max(a, b)
+	if a > b then
+		return a
+	else
+		return b
+	end
+end
+
+function Sort(arr)
+    local mx_value = arr.mx
+    arr.mx = nil
+    local sorter = {}
+    for i = 1, mx_value do
+        sorter[i] = 0
+    end
+    for _, v in ipairs(arr) do
+        sorter[v] = sorter[v] + 1
+    end
+    for i = #arr, 1, -1 do
+        arr[i] = nil
+    end
+
+    for i = 1, mx_value do
+        for j = 1, sorter[i] do
+            table.insert(arr, i)
+        end
+    end
+    arr.mx = mx_value
 end

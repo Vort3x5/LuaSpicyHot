@@ -6,11 +6,9 @@ function ResetWiring()
 		dir = 0,
 		id = 0
 	}
-	from_wire = {
-		state = false,
-		x = 0,
-		y = 0,
-	}
+	from_wire.state = false
+	from_wire.x = 0
+	from_wire.y = 0
 end
 
 function ExitMod()
@@ -26,16 +24,16 @@ end
 function CursorMovement()
 	if love.keyboard.isDown(LEFT_KEYS) 
 	and (not drawing_wire.state or drawing_wire.dir == L) then
-		cursor.x = cursor.x - GRID_SIZE / 2
+		cursor.x = cursor.x - GRID_SIZE / 5
 	elseif love.keyboard.isDown(DOWN_KEYS) 
 	and (not drawing_wire.state or drawing_wire.dir == D) then
-		cursor.y = cursor.y + GRID_SIZE / 2
+		cursor.y = cursor.y + GRID_SIZE / 5
 	elseif love.keyboard.isDown(UP_KEYS) 
 	and (not drawing_wire.state or drawing_wire.dir == U) then
-		cursor.y = cursor.y - GRID_SIZE / 2
+		cursor.y = cursor.y - GRID_SIZE / 5
 	elseif love.keyboard.isDown(RIGHT_KEYS) 
 	and (not drawing_wire.state or drawing_wire.dir == R) then
-		cursor.x = cursor.x + GRID_SIZE / 2
+		cursor.x = cursor.x + GRID_SIZE / 5
 	end
 end
 
@@ -52,7 +50,7 @@ function SetModWire(id)
 	from_wire.y = cursor.y
 end
 
-function WireFromElement(key)
+function WireFromElement(key, id)
 	local start_x, start_y, dir = cursor.x, cursor.y, 0
 	if InTable(FLAT_DEGREES, element.angle) then
 		if InTable(LEFT_KEYS, key) then
@@ -76,8 +74,9 @@ function WireFromElement(key)
 			state = true,
 			start_x = cursor.x,
 			start_y = cursor.y,
-			dir = dir
+			dir = dir,
 		}
+		-- TODO: WireAddNode(drawing_wire.id, id)
 	end
 end
 
@@ -104,5 +103,6 @@ function WireFromWire(key)
 	}
 end
 
-function PlaceWire()
+function SetResistance(id, value)
+	resistors[id] = value
 end

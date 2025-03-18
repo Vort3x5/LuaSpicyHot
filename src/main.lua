@@ -1,5 +1,4 @@
 local love     = require("love")
-local logic    = require("logic")
 local utils    = require("utils")
 local draw     = require("draw")
 local handlers = require("handlers")
@@ -12,20 +11,29 @@ BACKGROUND_COLOR = { 0.2, 0.2, 0.2 } -- gray
 
 GRID_SIZE = 10
 
-LEFT_KEYS    = {"left", "a", "h", "m"}
-DOWN_KEYS    = {"down", "s", "j", "n"}
-UP_KEYS      = {"up", "w", "k", "e"}
-RIGHT_KEYS   = {"right", "d", "l", "i"}
+LEFT_KEYS    = {"left", "h", "m"}
+DOWN_KEYS    = {"down", "j", "n"}
+UP_KEYS      = {"up", "k", "e"}
+RIGHT_KEYS   = {"right", "l", "i"}
 ELEMENT_KEYS = {"escape", "r"}
 
 FLAT_DEGREES = {90, 270}
 
 L, D, U, R = 1, 2, 3, 4
 
-sprites = {}
-wires = {}
+SCALE_UNITS = {
+	n = 0,000001,
+	m = 0.001,
+	k = 1000,
+	M = 1000000,
+}
+
+sprites            = {}
+wires              = {}
 elements_on_screen = {}
-circuits = {}
+circuits           = {}
+resistors          = {}
+junctions          = {}
 
 modifying = false
 from_wire = {
@@ -46,6 +54,8 @@ curr_circuit = 1
 element = 0
 cursor = {}
 
+node_count = 0
+
 dbg = false
 
 function love.load()
@@ -57,7 +67,8 @@ function love.load()
 	modifying = false
 	ResetWiring()
 	cursor = sprites[1]
-	InitGraph()
+	InitCircuit()
+	resistors[1] = 0
 end
 
 function love.update(dt)
@@ -73,43 +84,47 @@ function love.keypressed(key)
 		ExitMod()
 	end
 
-	if love.keyboard.isDown("lshift") and key == "r" then
+	local id = InSprite(cursor.x, cursor.y)
+	if love.keyboard.isDown("lshift") and key == 'r' then
 		AddNode(cursor.x, cursor.y, Resistor, 0)
 	elseif key == "space" and not modifying then
 		modifying = true
-		local id = InSprite(cursor.x, cursor.y)
-		print(id)
 		if id > 0 then
 			SetModElement(id)
 		elseif id < 0 then
 			SetModWire(id)
+		else
+			modifying = false
 		end
-	elseif key == 'return' and drawing_wire.state then
+	elseif key == 'v' and id > 0 then
+		SetResistance(id, 5)
+	elseif key == "return" and drawing_wire.state then
 		AddEdge(
 		   drawing_wire.start_x, drawing_wire.start_y,
 		   cursor.x, cursor.y,
 		   drawing_wire.dir, drawing_wire.id or 0
 		)
-		local id = InSprite(cursor.x, cursor.y)
-		print(elements_on_screen[(cursor.y - 1)*WINDOW_WIDTH + cursor.x])
-		print(id)
-		if id > 0 then
-			AddV(from_wire.src, id)
+		if id and id > 0 then
+			WireAddNode(drawing_wire.id, id)
 		end
 		ExitMod()
+	elseif love.keyboard.isDown("lshift") and key == 's' then
+		BuildCircuit()
+		SolveCircuit()
 	end
 
 	if modifying and not from_wire.state then
 		if key == 'r' then
 			Rotate()
 		end
-		WireFromElement(key)
+		WireFromElement(key, id)
 	elseif modifying and from_wire.state then
 		WireFromWire(key)
 	end
 
 	if key == "y" then
-		print(elements_on_screen[(cursor.y - 1)*WINDOW_WIDTH + cursor.x])
+		-- print(elements_on_screen[(cursor.y - 1)*WINDOW_WIDTH + cursor.x])
+		PrintCircuit()
 	end
 end
 
@@ -117,11 +132,10 @@ function love.draw()
 	ClearIDs()
 	love.graphics.clear(BACKGROUND_COLOR)
 
-	-- Move Filling IDs to keypress function, and use batching for sprites
 	for i, sprite in ipairs(sprites) do
 		DrawElement(sprite.x, sprite.y, sprite.draw, sprite.angle)
 		if i > 1 then
-			FillNodeID(sprite.x, sprite.y, i) -- don't fill for cursor
+			FillNodeID(sprite.x, sprite.y, i)
 		end
 	end
 	for i, wire in ipairs(wires) do
