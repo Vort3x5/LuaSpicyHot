@@ -50,7 +50,7 @@ function SetModWire(id)
 	from_wire.y = cursor.y
 end
 
-function WireFromElement(key, id)
+function WireFromElement(key)
 	local start_x, start_y, dir = cursor.x, cursor.y, 0
 	if InTable(FLAT_DEGREES, element.angle) then
 		if InTable(LEFT_KEYS, key) then
@@ -70,17 +70,17 @@ function WireFromElement(key, id)
 		end
 	end
 	if start_x ~= cursor.x or start_y ~= cursor.y then
-		drawing_wire = {
-			state = true,
-			start_x = cursor.x,
-			start_y = cursor.y,
-			dir = dir,
-		}
-		-- TODO: WireAddNode(drawing_wire.id, id)
+		curr_wire = curr_wire + 1
+		drawing_wire.state = true
+		drawing_wire.start_x = cursor.x
+		drawing_wire.start_y = cursor.y
+		drawing_wire.dir = dir
+		WireAddNode(-curr_wire, element.id)
 	end
 end
 
 function WireFromWire(key)
+	local start_x, start_y, dir = cursor.x, cursor.y, 0
 	if InTable(LEFT_KEYS, key) then
 		cursor.x, cursor.y = from_wire.x, from_wire.y
 		dir = L
@@ -101,6 +101,9 @@ function WireFromWire(key)
 		dir = dir,
 		id = element.id
 	}
+	if start_x ~= cursor.x or start_y ~= cursor.y then
+		curr_wire = curr_wire + 1
+	end
 end
 
 function SetResistance(id, value)

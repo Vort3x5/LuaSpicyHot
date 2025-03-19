@@ -51,6 +51,7 @@ drawing_wire = {
 }
 
 curr_circuit = 1
+curr_wire = 0
 element = 0
 cursor = {}
 
@@ -117,7 +118,7 @@ function love.keypressed(key)
 		if key == 'r' then
 			Rotate()
 		end
-		WireFromElement(key, id)
+		WireFromElement(key)
 	elseif modifying and from_wire.state then
 		WireFromWire(key)
 	end
@@ -132,18 +133,18 @@ function love.draw()
 	ClearIDs()
 	love.graphics.clear(BACKGROUND_COLOR)
 
-	for i, sprite in ipairs(sprites) do
-		DrawElement(sprite.x, sprite.y, sprite.draw, sprite.angle)
-		if i > 1 then
-			FillNodeID(sprite.x, sprite.y, i)
-		end
-	end
 	for i, wire in ipairs(wires) do
 		DrawWire(wire.start_x, wire.start_y, wire.end_x, wire.end_y)
 		if wire.id == 0 then
 			wire.id = -i
 		end
 		FillEdgeID(wire.start_x, wire.start_y, wire.end_x, wire.end_y, wire.direction, wire.id)
+	end
+	for i, sprite in ipairs(sprites) do
+		DrawElement(sprite.x, sprite.y, sprite.draw, sprite.angle)
+		if i > 1 then
+			FillNodeID(sprite.x, sprite.y, i)
+		end
 	end
 
 	local cursor = sprites[1]
