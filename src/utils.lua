@@ -75,7 +75,7 @@ function FillEdgeID(start_x, start_y, end_x, end_y, direction, id)
 	end
 	for i=i_start, i_end do
 		for j=j_start, j_end do
-			elements_on_screen[(i - 1)*WINDOW_WIDTH + j] = id
+			elements_on_screen[(i - 1)*WINDOW_WIDTH + j] = -id
 		end
 	end
 end

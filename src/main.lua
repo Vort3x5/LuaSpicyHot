@@ -103,7 +103,7 @@ function love.keypressed(key)
 		AddEdge(
 		   drawing_wire.start_x, drawing_wire.start_y,
 		   cursor.x, cursor.y,
-		   drawing_wire.dir, drawing_wire.id or 0
+		   drawing_wire.dir, drawing_wire.id
 		)
 		if id and id > 0 then
 			WireAddNode(drawing_wire.id, id)
@@ -136,7 +136,7 @@ function love.draw()
 	for i, wire in ipairs(wires) do
 		DrawWire(wire.start_x, wire.start_y, wire.end_x, wire.end_y)
 		if wire.id == 0 then
-			wire.id = -i
+			wire.id = i
 		end
 		FillEdgeID(wire.start_x, wire.start_y, wire.end_x, wire.end_y, wire.direction, wire.id)
 	end

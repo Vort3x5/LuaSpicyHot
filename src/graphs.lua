@@ -17,7 +17,7 @@ function InitCircuit()
 end
 
 function WireAddNode(edge, node)
-	table.insert(junctions[-edge], node)
+	table.insert(junctions[edge], node)
 end
 
 function CircuitAddNode(src, dest)

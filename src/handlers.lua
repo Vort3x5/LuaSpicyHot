@@ -1,11 +1,5 @@
 function ResetWiring()
-	drawing_wire = {
-		state = false,
-		start_x = 0,
-		start_y = 0,
-		dir = 0,
-		id = 0
-	}
+	drawing_wire.state = false
 	from_wire.state = false
 	from_wire.x = 0
 	from_wire.y = 0
@@ -39,6 +33,7 @@ end
 
 function SetModElement(id)
 	element = sprites[id]
+	element.id = id
 	from_wire.state = false
 	from_wire.src = id
 end
@@ -75,7 +70,8 @@ function WireFromElement(key)
 		drawing_wire.start_x = cursor.x
 		drawing_wire.start_y = cursor.y
 		drawing_wire.dir = dir
-		WireAddNode(-curr_wire, element.id)
+		drawing_wire.id = curr_wire
+		WireAddNode(drawing_wire.id, element.id)
 	end
 end
 
@@ -94,13 +90,10 @@ function WireFromWire(key)
 		cursor.x, cursor.y = from_wire.x, from_wire.y
 		dir = R
 	end
-	drawing_wire = {
-		state = true,
-		start_x = from_wire.x,
-		start_y = from_wire.y,
-		dir = dir,
-		id = element.id
-	}
+	drawing_wire.state = true
+	drawing_wire.start_x = from_wire.x
+	drawing_wire.start_y = from_wire.y
+	drawing_wire.dir = dir
 	if start_x ~= cursor.x or start_y ~= cursor.y then
 		curr_wire = curr_wire + 1
 	end
