@@ -3,6 +3,7 @@ local utils    = require("utils")
 local draw     = require("draw")
 local handlers = require("handlers")
 local graphs   = require("graphs")
+local gui = require("gui")
 
 WINDOW_WIDTH  = 1280
 WINDOW_HEIGHT = 720
@@ -157,4 +158,5 @@ function love.draw()
 	if dbg then
 		DebugIDs()
 	end
+	gui.DrawMenu(modifying, from_wire.state)
 end
