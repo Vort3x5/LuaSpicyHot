@@ -99,6 +99,22 @@ function WireFromWire(key)
 	end
 end
 
-function SetResistance(id, value)
-	resistors[id] = value
+function HandleSettingResistance(key)
+	if setting_resistance then
+		if key == "return" then
+			local value = tonumber(resistance_input)
+			if value then
+				resistors[selected_resistor] = value
+			end
+			setting_resistance = false
+			resistance_input = ""
+		elseif key == "backspace" then
+			resistance_input = resistance_input:sub(1, -2)
+		elseif tonumber(key) or key == "." then
+			resistance_input = resistance_input .. key
+		elseif key == "escape" then
+			setting_resistance = false
+			resistance_input = ""
+		end
+	end
 end

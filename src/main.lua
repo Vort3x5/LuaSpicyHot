@@ -3,7 +3,7 @@ local utils    = require("utils")
 local draw     = require("draw")
 local handlers = require("handlers")
 local graphs   = require("graphs")
-local gui = require("gui")
+local gui      = require("gui")
 
 WINDOW_WIDTH  = 1280
 WINDOW_HEIGHT = 720
@@ -56,6 +56,10 @@ curr_wire = 0
 element = 0
 cursor = {}
 
+setting_resistance = false
+resistance_input = ""
+selected_resistor = 0
+
 node_count = 0
 
 dbg = false
@@ -99,7 +103,8 @@ function love.keypressed(key)
 			modifying = false
 		end
 	elseif key == 'v' and id > 0 then
-		SetResistance(id, 5)
+        selected_resistor = id
+		setting_resistance = true
 	elseif key == "return" and drawing_wire.state then
 		AddEdge(
 		   drawing_wire.start_x, drawing_wire.start_y,
@@ -114,6 +119,7 @@ function love.keypressed(key)
 		BuildCircuit()
 		SolveCircuit()
 	end
+	HandleSettingResistance(key)
 
 	if modifying and not from_wire.state then
 		if key == 'r' then
@@ -158,5 +164,8 @@ function love.draw()
 	if dbg then
 		DebugIDs()
 	end
-	gui.DrawMenu(modifying, from_wire.state)
+	if setting_resistance then
+		DrawPopUp()
+	end
+	DrawMenu(modifying, from_wire.state)
 end
